@@ -1,0 +1,21 @@
+node_modules/
+.next/
+out/
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.local
+.env*.local
+.vscode/
+.idea/
+next-env.d.ts
+
+# Strategy docs stay private
+PRD.md
+CONTEXT.md
+copy.md
+brand.md
+
+# Archived v1 build
+_v1-static/
