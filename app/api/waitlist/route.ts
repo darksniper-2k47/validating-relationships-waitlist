@@ -10,6 +10,8 @@ const schema = z.object({
   website: z.string().max(0).optional().or(z.literal("")),
 });
 
+export const runtime = "nodejs";
+
 export async function POST(req: Request) {
   let body: unknown;
   try {
@@ -26,42 +28,76 @@ export async function POST(req: Request) {
     );
   }
 
-  // Honeypot — silently succeed
+  // Honeypot — silently succeed (don't tip off the bot)
   if (parsed.data.website) {
-    return NextResponse.json({ ok: true, demo: false });
+    return NextResponse.json({ ok: true });
   }
 
-  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
-  if (!accessKey || accessKey === "your_web3forms_access_key_here") {
-    // DEMO mode — log it and return success so dev UX works
-    console.info("[waitlist] DEMO mode (no WEB3FORMS_ACCESS_KEY set):", parsed.data);
-    return NextResponse.json({ ok: true, demo: true });
-  }
+  const sheetsUrl = process.env.SHEETS_WEBHOOK_URL;
+  const web3FormsKey = process.env.WEB3FORMS_ACCESS_KEY;
+  const userAgent = req.headers.get("user-agent") || "";
 
-  try {
-    const res = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        access_key: accessKey,
-        subject: "New Validating Relationships waitlist signup",
-        from_name: "Validating Relationships waitlist",
-        name: parsed.data.name,
-        email: parsed.data.email,
-        phone: parsed.data.phone || "",
-        country: parsed.data.country || "",
-      }),
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok || json.success === false) {
-      return NextResponse.json(
-        { ok: false, error: json.message || "Submission failed" },
-        { status: 502 }
-      );
+  const payload = {
+    name: parsed.data.name,
+    email: parsed.data.email,
+    phone: parsed.data.phone || "",
+    country: parsed.data.country || "",
+    source: "waitlist-page",
+    userAgent,
+  };
+
+  // PRIMARY: Google Apps Script → Google Sheet
+  if (sheetsUrl) {
+    try {
+      const res = await fetch(sheetsUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        redirect: "follow",
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || json.ok === false) {
+        console.error("[waitlist] Sheets webhook failed:", res.status, json);
+        return NextResponse.json(
+          { ok: false, error: json.error || "Submission failed" },
+          { status: 502 }
+        );
+      }
+      return NextResponse.json({ ok: true, sink: "sheets" });
+    } catch (err) {
+      console.error("[waitlist] Sheets webhook error:", err);
+      return NextResponse.json({ ok: false, error: "Network error" }, { status: 502 });
     }
-    return NextResponse.json({ ok: true, demo: false });
-  } catch (err) {
-    console.error("[waitlist] forwarding error", err);
-    return NextResponse.json({ ok: false, error: "Network error" }, { status: 502 });
   }
+
+  // FALLBACK: Web3Forms
+  if (web3FormsKey && web3FormsKey !== "your_web3forms_access_key_here") {
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: web3FormsKey,
+          subject: "New Validating Relationships waitlist signup",
+          from_name: "Validating Relationships waitlist",
+          ...payload,
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || json.success === false) {
+        return NextResponse.json(
+          { ok: false, error: json.message || "Submission failed" },
+          { status: 502 }
+        );
+      }
+      return NextResponse.json({ ok: true, sink: "web3forms" });
+    } catch (err) {
+      console.error("[waitlist] Web3Forms error:", err);
+      return NextResponse.json({ ok: false, error: "Network error" }, { status: 502 });
+    }
+  }
+
+  // DEMO mode — neither configured. Log and succeed so dev UX works.
+  console.info("[waitlist] DEMO mode (set SHEETS_WEBHOOK_URL or WEB3FORMS_ACCESS_KEY):", payload);
+  return NextResponse.json({ ok: true, demo: true });
 }
