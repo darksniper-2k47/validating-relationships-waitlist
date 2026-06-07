@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Countdown from "@/components/countdown";
+import BuyButton from "@/components/buy-button";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -26,13 +26,11 @@ export default function Nav() {
     <>
       {/* Top urgency strip — compact on mobile */}
       <div className="fixed top-0 inset-x-0 z-[60] bg-gradient-to-r from-ember-deep/95 via-ember-brown/90 to-ember-deep/95 backdrop-blur-md border-b border-covenant-gold/15">
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-1.5 sm:py-2 flex items-center justify-between gap-3">
-          <p className="text-[10px] sm:text-[12px] font-medium tracking-wide text-parchment-mute truncate">
-            <span className="text-covenant-bright font-semibold">Preorder opens</span>
-            <span className="hidden xs:inline"> · </span>
-            <span className="hidden xs:inline">June 15, 2026</span>
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-1.5 sm:py-2 flex items-center justify-center gap-3">
+          <p className="text-[10px] sm:text-[12px] font-medium tracking-wide text-parchment-mute truncate text-center">
+            <span className="text-covenant-bright font-semibold">Out now</span>
+            <span className="hidden xs:inline"> · Instant PDF download · R299</span>
           </p>
-          <Countdown variant="compact" label="Opens in" />
         </div>
       </div>
 
@@ -79,15 +77,14 @@ export default function Nav() {
             <a href="#faq" className="hover:text-covenant-bright transition-colors">FAQ</a>
           </nav>
 
-          <a
-            href="#waitlist"
-            className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-covenant-gold/50 text-covenant-bright text-[13px] font-semibold tracking-wide hover:bg-covenant-gold/10 hover:border-covenant-bright transition-colors"
-          >
-            Join waitlist
-            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden>
-              <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
+          <div className="hidden md:block">
+            <BuyButton
+              variant="ghost"
+              magnetic={false}
+              label="Buy now"
+              className="px-5 py-2.5 text-[13px]"
+            />
+          </div>
 
           <button
             type="button"
@@ -138,16 +135,13 @@ export default function Nav() {
                   {label}
                 </a>
               ))}
-              <a
-                href="#waitlist"
-                onClick={() => setOpen(false)}
-                className="btn-molten mt-4 px-6 py-3.5 rounded-full text-center font-semibold inline-flex items-center justify-center gap-2"
-              >
-                Join the waitlist
-                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden>
-                  <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
+              <div className="mt-4">
+                <BuyButton
+                  magnetic={false}
+                  label="Buy now — R299"
+                  className="w-full justify-center px-6 py-3.5 text-[16px]"
+                />
+              </div>
             </motion.nav>
           </>
         )}

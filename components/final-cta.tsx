@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Button from "@/components/ui/button";
+import BuyButton from "@/components/buy-button";
 import { fadeUp, stagger } from "@/lib/motion";
 
 export default function FinalCTA() {
@@ -24,18 +24,10 @@ export default function FinalCTA() {
             Get the blueprint instead.
           </motion.h2>
           <motion.p variants={fadeUp} className="mt-8 text-parchment-mute max-w-xl mx-auto">
-            Save your spot below before founding-reader pricing closes.
+            The full book, all 188 pages, downloads the moment you buy. R299, once.
           </motion.p>
           <motion.div variants={fadeUp} className="mt-8 flex justify-center">
-            <Button
-              size="lg"
-              onClick={() => document.querySelector("#waitlist")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Reserve my copy
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-                <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </Button>
+            <BuyButton size="lg" label="Buy now — R299" />
           </motion.div>
         </motion.div>
       </div>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, stagger, EASE } from "@/lib/motion";
-import Button from "@/components/ui/button";
+import BuyButton from "@/components/buy-button";
 
 type Layer = "foundation" | "body" | "roof";
 
@@ -108,7 +108,7 @@ export default function LevelAudit() {
         >
           <motion.p variants={fadeUp} className="eyebrow inline-flex justify-center">
             <span className="w-1.5 h-1.5 rounded-full bg-covenant-bright shadow-[0_0_12px_#F4C542]" />
-            Before you join the waitlist
+            Before you buy
           </motion.p>
           <motion.h2 variants={fadeUp} className="h2 mt-6 mx-auto max-w-2xl">
             Find out which kind of friend
@@ -197,16 +197,7 @@ export default function LevelAudit() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
-                  <Button
-                    onClick={() => document.querySelector("#waitlist")?.scrollIntoView({ behavior: "smooth" })}
-                    size="lg"
-                    className="w-full sm:w-auto"
-                  >
-                    Reserve my copy
-                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden>
-                      <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </Button>
+                  <BuyButton size="lg" label="Buy now — R299" className="w-full sm:w-auto justify-center" />
                   <button
                     onClick={reset}
                     className="text-covenant-gold hover:text-covenant-bright text-sm underline-offset-4 hover:underline transition-colors py-2"

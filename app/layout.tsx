@@ -27,13 +27,16 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Validating Relationships — by Dr. Joshua N. Simeon · Waitlist",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://validating-relationships-waitlist.vercel.app"
+  ),
+  title: "Validating Relationships — by Dr. Joshua N. Simeon",
   description:
-    "Reserve your copy of Validating Relationships — Bishop Dr. Joshua N. Simeon's blueprint for the wounded, the betrayed, and the believer who is confused by the word friend. Releasing June 2026.",
+    "Buy Validating Relationships — Bishop Dr. Joshua N. Simeon's blueprint for the wounded, the betrayed, and the believer who is confused by the word friend. Instant digital download, R299.",
   openGraph: {
     title: "Validating Relationships — by Dr. Joshua N. Simeon",
     description:
-      "The extent to which you make it in life is dependent on the kind of relationships you allow into your life. Join the waitlist.",
+      "The extent to which you make it in life is dependent on the kind of relationships you allow into your life. Get the book — instant download, R299.",
     images: ["/images/cover-front.jpg"],
     type: "website",
   },

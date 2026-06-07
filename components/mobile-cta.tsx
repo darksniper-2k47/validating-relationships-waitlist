@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Countdown from "@/components/countdown";
+import BuyButton from "@/components/buy-button";
 
 export default function MobileCTA() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const form = document.getElementById("waitlist");
-    if (!form) return;
+    const buy = document.getElementById("buy");
+    if (!buy) return;
 
     let pastHero = false;
     let inForm = false;
@@ -26,7 +26,7 @@ export default function MobileCTA() {
       },
       { rootMargin: "0px 0px -40% 0px" }
     );
-    io.observe(form);
+    io.observe(buy);
 
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -51,19 +51,15 @@ export default function MobileCTA() {
             <div className="bg-obsidian/90 backdrop-blur-xl border-t border-covenant-gold/20 px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))]">
               <div className="flex items-center justify-between gap-3 mb-2.5">
                 <p className="text-[11px] font-medium text-parchment-mute">
-                  <span className="text-covenant-bright font-semibold">Preorder opens in</span>
+                  <span className="text-covenant-bright font-semibold">Instant PDF download</span>
                 </p>
-                <Countdown variant="compact" />
+                <span className="text-[12px] font-heading font-bold text-covenant-bright">R299</span>
               </div>
-              <a
-                href="#waitlist"
-                className="btn-molten flex items-center justify-center gap-2 w-full py-3.5 rounded-full font-semibold text-[15px]"
-              >
-                Join the waitlist
-                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden>
-                  <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
+              <BuyButton
+                magnetic={false}
+                label="Buy now — R299"
+                className="w-full justify-center py-3.5 text-[15px]"
+              />
             </div>
           </div>
         </motion.div>

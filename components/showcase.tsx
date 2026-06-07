@@ -29,7 +29,7 @@ export default function Showcase() {
             >
               <img
                 src="/images/cover-stack.jpg"
-                alt="Validating Relationships — preorder mockup"
+                alt="Validating Relationships — book mockup"
                 className="absolute inset-0 w-full h-full object-cover"
               />
             </motion.div>

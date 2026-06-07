@@ -6,32 +6,32 @@ import { fadeUp, stagger, EASE } from "@/lib/motion";
 
 const ITEMS = [
   {
-    q: "When does the book release?",
-    a: "June 2026. The exact date drops to the waitlist first, two weeks before the public.",
+    q: "Is the book available now?",
+    a: "Yes. It is available right now as an instant digital download. You buy it and the full book is yours in seconds — no waiting.",
   },
   {
-    q: "How much will it cost?",
-    a: "Standard pricing is R299 for the digital edition and R699 for the paperback bundle. Waitlist members get founding-reader pricing — below the public rate.",
+    q: "How much is it, and how do I pay?",
+    a: "R299 for the complete digital edition. You pay securely through Yoco — card or instant EFT, in South African Rand — and the book downloads straight after.",
   },
   {
-    q: "Will there be a paperback?",
-    a: "Yes. The paperback ships from Cape Town, South Africa. Digital downloads land in your inbox the moment preorders open.",
+    q: "What format is it? Will it work on my phone?",
+    a: "It is a PDF. It opens on any phone, tablet, laptop, or e-reader. You get all 188 pages — every chapter and appendix.",
   },
   {
     q: "What if I have already read a lot of books on friendship and relationships?",
     a: "This one is different. Bishop Joshua has pastored, been betrayed, released members from his own ministry, and lived every story in the book. It is not therapy talk. It is a working blueprint, with covenant tests, building assessments, and a hidden enemy audit you can apply this week.",
   },
   {
-    q: "Can I read a chapter first?",
-    a: "Yes. Everyone on the waitlist gets Chapter 1 — The Architecture of Relationships — free, the day preorders open.",
+    q: "Do I get the whole book, or just a sample?",
+    a: "The whole book. The moment you pay, you get the complete blueprint — all 188 pages, ready to read tonight.",
   },
   {
     q: "Who is this book for?",
     a: "Pastors wounded by people they trusted. Believers confused by the word friend. Leaders who want a blueprint for who to keep close — and who to release without guilt.",
   },
   {
-    q: "Will Bishop sign copies?",
-    a: "Yes. The first 100 waitlist members who preorder the paperback get a personally signed copy.",
+    q: "Is there a printed paperback?",
+    a: "A printed edition is in the works. For now, the digital PDF gives you the full book today, at R299.",
   },
 ];
 
