@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { fadeUp, stagger, EASE } from "@/lib/motion";
 
 // On mobile, the building plays as a timed sequence when it enters view
@@ -60,6 +60,12 @@ export default function Framework() {
     return () => mq.removeEventListener("change", update);
   }, []);
 
+  // Reliable in-view trigger for the mobile build — measured on the HTML
+  // container, NOT on the SVG (IntersectionObserver is flaky on SVG nodes).
+  const buildingRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(buildingRef, { once: true, amount: 0.4 });
+  const play = isMobile && inView;
+
   // The building constructs as you scroll (desktop)
   const foundationY = useTransform(scrollYProgress, [0.05, 0.35], [60, 0]);
   const foundationO = useTransform(scrollYProgress, [0.05, 0.3], [0, 1]);
@@ -107,7 +113,7 @@ export default function Framework() {
 
         <div className="grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-20 items-center">
           {/* CONSTRUCTING BUILDING — on mobile this sits AFTER the 3 cards (the payoff); on desktop it's the left column */}
-          <div className="order-2 lg:order-1 relative aspect-[3/4] max-w-[300px] sm:max-w-md mx-auto w-full mt-4 lg:mt-0">
+          <div ref={buildingRef} className="order-2 lg:order-1 relative aspect-[3/4] max-w-[300px] sm:max-w-md mx-auto w-full mt-4 lg:mt-0">
             <div aria-hidden className="absolute -inset-12 bg-[radial-gradient(circle_at_center,rgba(244,197,66,0.12),transparent_70%)] blur-2xl rounded-full" />
 
             <svg viewBox="0 0 300 400" className="relative w-full h-full">
@@ -136,7 +142,7 @@ export default function Framework() {
               {/* Animated building — scroll-scrubbed (desktop), timed-on-enter (mobile) */}
               <motion.g
                 {...(isMobile
-                  ? { initial: "hidden", whileInView: "show", viewport: { once: true, amount: 0.5 } }
+                  ? { initial: "hidden", animate: play ? "show" : "hidden" }
                   : {})}
               >
               {/* Rain (only when roof is up) */}
@@ -211,8 +217,7 @@ export default function Framework() {
               {...(isMobile
                 ? {
                     initial: { opacity: 0 },
-                    whileInView: { opacity: 1 },
-                    viewport: { once: true, amount: 0.6 },
+                    animate: play ? { opacity: 1 } : { opacity: 0 },
                     transition: { delay: 1.0, duration: 0.6 },
                   }
                 : { style: { opacity: captionO } })}
