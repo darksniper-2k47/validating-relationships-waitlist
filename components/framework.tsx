@@ -106,8 +106,8 @@ export default function Framework() {
         </motion.header>
 
         <div className="grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-20 items-center">
-          {/* SCROLL-CONSTRUCTING BUILDING */}
-          <div className="relative aspect-[3/4] max-w-[280px] sm:max-w-md mx-auto w-full">
+          {/* CONSTRUCTING BUILDING — on mobile this sits AFTER the 3 cards (the payoff); on desktop it's the left column */}
+          <div className="order-2 lg:order-1 relative aspect-[3/4] max-w-[300px] sm:max-w-md mx-auto w-full mt-4 lg:mt-0">
             <div aria-hidden className="absolute -inset-12 bg-[radial-gradient(circle_at_center,rgba(244,197,66,0.12),transparent_70%)] blur-2xl rounded-full" />
 
             <svg viewBox="0 0 300 400" className="relative w-full h-full">
@@ -136,7 +136,7 @@ export default function Framework() {
               {/* Animated building — scroll-scrubbed (desktop), timed-on-enter (mobile) */}
               <motion.g
                 {...(isMobile
-                  ? { initial: "hidden", whileInView: "show", viewport: { once: true, amount: 0.35 } }
+                  ? { initial: "hidden", whileInView: "show", viewport: { once: true, amount: 0.5 } }
                   : {})}
               >
               {/* Rain (only when roof is up) */}
@@ -230,7 +230,7 @@ export default function Framework() {
             whileInView="show"
             viewport={{ once: true, margin: "-100px" }}
             variants={stagger}
-            className="flex flex-col gap-6"
+            className="order-1 lg:order-2 flex flex-col gap-6"
           >
             {LAYERS.map((l, i) => (
               <motion.article
