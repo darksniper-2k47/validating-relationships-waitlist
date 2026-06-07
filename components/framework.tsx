@@ -1,23 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { fadeUp, stagger, EASE } from "@/lib/motion";
-
-// On mobile, the building plays as a timed sequence when it enters view
-// (foundation → body → roof → rain) so the viewer always sees the roof placed.
-const reveal = {
-  hidden: (c: { from: number; delay: number }) => ({ opacity: 0, y: c.from }),
-  show: (c: { from: number; delay: number }) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay: c.delay, ease: EASE },
-  }),
-};
-const rainReveal = {
-  hidden: { opacity: 0 },
-  show: { opacity: 0.6, transition: { duration: 0.8, delay: 1.15, ease: EASE } },
-};
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { fadeUp, stagger } from "@/lib/motion";
 
 const LAYERS = [
   {
@@ -44,54 +29,28 @@ const LAYERS = [
 ];
 
 export default function Framework() {
-  const sceneRef = useRef<HTMLDivElement>(null);
+  const buildingRef = useRef<HTMLDivElement>(null);
+
+  // The build is scrubbed against the building's OWN position: it starts as the
+  // building enters from the bottom and is fully assembled by the time its
+  // centre reaches the centre of the screen. Works the same on mobile + desktop,
+  // and the target is the HTML container (reliable, unlike scroll on SVG nodes).
   const { scrollYProgress } = useScroll({
-    target: sceneRef,
-    offset: ["start end", "end start"],
+    target: buildingRef,
+    offset: ["start end", "center center"],
   });
 
-  // Desktop scrubs the build with scroll; mobile plays it on enter (see below).
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 1023px)");
-    const update = () => setIsMobile(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  // Reliable in-view trigger for the mobile build — measured on the HTML
-  // container, NOT on the SVG (IntersectionObserver is flaky on SVG nodes).
-  const buildingRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(buildingRef, { once: true, amount: 0.4 });
-  const play = isMobile && inView;
-
-  // The building constructs as you scroll (desktop)
-  const foundationY = useTransform(scrollYProgress, [0.05, 0.35], [60, 0]);
-  const foundationO = useTransform(scrollYProgress, [0.05, 0.3], [0, 1]);
-  const bodyY = useTransform(scrollYProgress, [0.25, 0.55], [80, 0]);
-  const bodyO = useTransform(scrollYProgress, [0.25, 0.5], [0, 1]);
-  const roofY = useTransform(scrollYProgress, [0.45, 0.75], [-80, 0]);
-  const roofO = useTransform(scrollYProgress, [0.45, 0.7], [0, 1]);
-  const rainO = useTransform(scrollYProgress, [0.7, 0.95], [0, 0.6]);
-  const captionO = useTransform(scrollYProgress, [0.6, 0.85], [0, 1]);
-
-  // Per-layer animation props: scroll-driven (desktop) vs timed-on-enter (mobile)
-  const layerProps = (
-    style: { y: typeof foundationY; opacity: typeof foundationO },
-    from: number,
-    delay: number
-  ) =>
-    isMobile
-      ? ({ variants: reveal, custom: { from, delay } } as const)
-      : ({ style } as const);
+  const foundationY = useTransform(scrollYProgress, [0.0, 0.35], [60, 0]);
+  const foundationO = useTransform(scrollYProgress, [0.0, 0.3], [0, 1]);
+  const bodyY = useTransform(scrollYProgress, [0.28, 0.62], [80, 0]);
+  const bodyO = useTransform(scrollYProgress, [0.28, 0.58], [0, 1]);
+  const roofY = useTransform(scrollYProgress, [0.55, 0.85], [-80, 0]);
+  const roofO = useTransform(scrollYProgress, [0.55, 0.82], [0, 1]);
+  const rainO = useTransform(scrollYProgress, [0.85, 1], [0, 0.6]);
+  const captionO = useTransform(scrollYProgress, [0.85, 1], [0, 1]);
 
   return (
-    <section
-      ref={sceneRef}
-      id="framework"
-      className="relative py-20 sm:py-28 lg:py-44 overflow-hidden"
-    >
+    <section id="framework" className="relative py-20 sm:py-28 lg:py-44 overflow-hidden">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <motion.header
           initial="hidden"
@@ -113,7 +72,10 @@ export default function Framework() {
 
         <div className="grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-20 items-center">
           {/* CONSTRUCTING BUILDING — on mobile this sits AFTER the 3 cards (the payoff); on desktop it's the left column */}
-          <div ref={buildingRef} className="order-2 lg:order-1 relative aspect-[3/4] max-w-[300px] sm:max-w-md mx-auto w-full mt-4 lg:mt-0">
+          <div
+            ref={buildingRef}
+            className="order-2 lg:order-1 relative aspect-[3/4] max-w-[300px] sm:max-w-md mx-auto w-full mt-6 lg:mt-0"
+          >
             <div aria-hidden className="absolute -inset-12 bg-[radial-gradient(circle_at_center,rgba(244,197,66,0.12),transparent_70%)] blur-2xl rounded-full" />
 
             <svg viewBox="0 0 300 400" className="relative w-full h-full">
@@ -139,14 +101,8 @@ export default function Framework() {
                 <line x1="0" y1="320" x2="300" y2="320" stroke="url(#goldStroke)" strokeWidth="0.5" strokeDasharray="2 6" />
               </g>
 
-              {/* Animated building — scroll-scrubbed (desktop), timed-on-enter (mobile) */}
-              <motion.g
-                {...(isMobile
-                  ? { initial: "hidden", animate: play ? "show" : "hidden" }
-                  : {})}
-              >
               {/* Rain (only when roof is up) */}
-              <motion.g {...(isMobile ? { variants: rainReveal } : { style: { opacity: rainO } })}>
+              <motion.g style={{ opacity: rainO }}>
                 {Array.from({ length: 14 }).map((_, i) => (
                   <line
                     key={i}
@@ -161,7 +117,7 @@ export default function Framework() {
               </motion.g>
 
               {/* Roof */}
-              <motion.g {...layerProps({ y: roofY, opacity: roofO }, -80, 0.7)}>
+              <motion.g style={{ y: roofY, opacity: roofO }}>
                 <path d="M30 130 L150 60 L270 130 Z" fill="url(#roofGrad)" stroke="url(#goldStroke)" strokeWidth="1.5" />
                 <path d="M50 130 L80 110 L80 130 Z M220 130 L250 110 L250 130 Z" fill="rgba(139,0,0,0.4)" />
                 <text x="150" y="105" textAnchor="middle" fontSize="10" fill="#D4AF37" letterSpacing="2" fontFamily="var(--font-inter)">
@@ -170,7 +126,7 @@ export default function Framework() {
               </motion.g>
 
               {/* Body */}
-              <motion.g {...layerProps({ y: bodyY, opacity: bodyO }, 80, 0.35)}>
+              <motion.g style={{ y: bodyY, opacity: bodyO }}>
                 <rect x="40" y="130" width="220" height="170" fill="url(#bodyFill)" stroke="url(#goldStroke)" strokeWidth="1.5" />
                 <line x1="100" y1="130" x2="100" y2="300" stroke="rgba(212,175,55,0.4)" strokeWidth="0.5" />
                 <line x1="150" y1="130" x2="150" y2="300" stroke="rgba(212,175,55,0.4)" strokeWidth="0.5" />
@@ -189,7 +145,7 @@ export default function Framework() {
               </motion.g>
 
               {/* Foundation */}
-              <motion.g {...layerProps({ y: foundationY, opacity: foundationO }, 60, 0)}>
+              <motion.g style={{ y: foundationY, opacity: foundationO }}>
                 <rect x="20" y="300" width="260" height="50" fill="rgba(212,175,55,0.25)" stroke="url(#goldStroke)" strokeWidth="2" />
                 <line x1="20" y1="320" x2="280" y2="320" stroke="rgba(244,197,66,0.4)" strokeWidth="0.5" />
                 <line x1="20" y1="340" x2="280" y2="340" stroke="rgba(244,197,66,0.4)" strokeWidth="0.5" />
@@ -210,17 +166,10 @@ export default function Framework() {
                   />
                 ))}
               </motion.g>
-              </motion.g>
             </svg>
 
             <motion.div
-              {...(isMobile
-                ? {
-                    initial: { opacity: 0 },
-                    animate: play ? { opacity: 1 } : { opacity: 0 },
-                    transition: { delay: 1.0, duration: 0.6 },
-                  }
-                : { style: { opacity: captionO } })}
+              style={{ opacity: captionO }}
               className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-center"
             >
               <p className="font-display italic text-covenant-bright text-[15px]">
@@ -237,7 +186,7 @@ export default function Framework() {
             variants={stagger}
             className="order-1 lg:order-2 flex flex-col gap-6"
           >
-            {LAYERS.map((l, i) => (
+            {LAYERS.map((l) => (
               <motion.article
                 key={l.n}
                 variants={fadeUp}

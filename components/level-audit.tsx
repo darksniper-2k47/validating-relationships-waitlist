@@ -75,6 +75,7 @@ export default function LevelAudit() {
   const [step, setStep] = useState(0);
   const [counts, setCounts] = useState<Record<Layer, number>>({ foundation: 0, body: 0, roof: 0 });
   const [done, setDone] = useState(false);
+  const [started, setStarted] = useState(false);
 
   const answer = (layer: Layer) => {
     const next = { ...counts, [layer]: counts[layer] + 1 };
@@ -94,6 +95,7 @@ export default function LevelAudit() {
     setStep(0);
     setCounts({ foundation: 0, body: 0, roof: 0 });
     setDone(false);
+    setStarted(false);
   };
 
   return (
@@ -106,27 +108,43 @@ export default function LevelAudit() {
           variants={stagger}
           className="text-center mb-10 sm:mb-16"
         >
-          <motion.p variants={fadeUp} className="eyebrow inline-flex justify-center">
-            <span className="w-1.5 h-1.5 rounded-full bg-covenant-bright shadow-[0_0_12px_#F4C542]" />
-            Before you buy
-          </motion.p>
+          <motion.div variants={fadeUp} className="flex justify-center">
+            <motion.span
+              animate={{ boxShadow: ["0 0 0px rgba(244,197,66,0)", "0 0 24px rgba(244,197,66,0.5)", "0 0 0px rgba(244,197,66,0)"] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              className="inline-flex items-center gap-2.5 rounded-full border border-covenant-gold/60 bg-covenant-gold/10 px-4 py-2 text-[11px] sm:text-[12px] font-semibold tracking-[0.18em] uppercase text-covenant-bright"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-covenant-bright opacity-70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-covenant-bright" />
+              </span>
+              Interactive · 60-second test
+            </motion.span>
+          </motion.div>
           <motion.h2 variants={fadeUp} className="h2 mt-6 mx-auto max-w-2xl">
-            Find out which kind of friend
+            Which kind of friend
             <br />
-            <span className="italic-light">you are giving the most access to.</span>
+            <span className="italic-light">are you giving the most access to?</span>
           </motion.h2>
           <motion.p variants={fadeUp} className="mt-6 text-parchment-mute max-w-xl mx-auto">
-            Five honest questions. Sixty seconds. No email required to see the result.
+            Take the test below. Five honest questions, sixty seconds, no email. Most people are surprised by the answer.
           </motion.p>
         </motion.header>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, ease: EASE }}
-          className="glass-strong p-6 sm:p-10 lg:p-16 relative overflow-hidden"
-        >
+        <div className="relative">
+          <motion.div
+            aria-hidden
+            animate={{ opacity: [0.25, 0.6, 0.25] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+            className="pointer-events-none absolute -inset-3 sm:-inset-6 -z-10 rounded-[2rem] bg-[radial-gradient(ellipse_at_center,rgba(244,197,66,0.18),transparent_70%)] blur-2xl"
+          />
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, ease: EASE }}
+            className="glass-strong p-6 sm:p-10 lg:p-16 relative overflow-hidden"
+          >
           <div aria-hidden className="absolute inset-x-0 top-0 h-1 bg-covenant-gold/10">
             <motion.div
               className="h-full bg-gradient-to-r from-covenant-gold via-covenant-bright to-covenant-dark"
@@ -137,6 +155,38 @@ export default function LevelAudit() {
 
           <AnimatePresence mode="wait">
             {!done ? (
+              !started ? (
+              <motion.div
+                key="intro"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5, ease: EASE }}
+                className="text-center py-2"
+              >
+                <h3 className="font-heading font-bold text-[clamp(22px,5vw,40px)] leading-tight text-white mb-4 text-balance">
+                  Which friend are you giving the most access to?
+                </h3>
+                <p className="text-parchment-mute max-w-md mx-auto mb-9 text-[15px] sm:text-base leading-relaxed">
+                  Five quick questions. Sixty seconds. No email. Most people are surprised by who lands where.
+                </p>
+                <motion.button
+                  type="button"
+                  onClick={() => setStarted(true)}
+                  animate={{ scale: [1, 1.035, 1] }}
+                  transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                  className="btn-molten inline-flex items-center justify-center gap-3 rounded-full font-semibold px-10 py-5 text-[17px]"
+                >
+                  Start the test
+                  <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
+                    <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </motion.button>
+                <p className="mt-5 text-[12px] text-parchment-mute/70">
+                  Takes about a minute · your answers stay on your device
+                </p>
+              </motion.div>
+              ) : (
               <motion.div
                 key={step}
                 initial={{ opacity: 0, y: 30 }}
@@ -168,6 +218,7 @@ export default function LevelAudit() {
                   ))}
                 </div>
               </motion.div>
+              )
             ) : (
               <motion.div
                 key="result"
@@ -208,7 +259,8 @@ export default function LevelAudit() {
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
