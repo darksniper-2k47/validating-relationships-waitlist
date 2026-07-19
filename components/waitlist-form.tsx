@@ -36,7 +36,7 @@ export default function WaitlistForm() {
 
             <motion.div variants={fadeUp} className="mt-8 flex items-end justify-center gap-2">
               <span className="font-heading font-extrabold text-[clamp(44px,9vw,72px)] leading-none text-covenant-bright glow-gold">
-                R299
+                R5
               </span>
               <span className="mb-2 text-parchment-mute text-[14px]">once · no subscription</span>
             </motion.div>
@@ -53,7 +53,7 @@ export default function WaitlistForm() {
             </motion.ul>
 
             <motion.div variants={fadeUp} className="mt-10 flex justify-center">
-              <BuyButton size="lg" label="Buy now — R299" className="w-full sm:w-auto justify-center" />
+              <BuyButton size="lg" label="Buy now — R5" className="w-full sm:w-auto justify-center" />
             </motion.div>
 
             <motion.p variants={fadeUp} className="mt-6 text-center text-[13px] text-parchment-mute/75">

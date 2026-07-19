@@ -4,7 +4,7 @@ import { randomUUID } from "crypto";
 export const runtime = "nodejs";
 
 // Validating Relationships — digital edition
-const AMOUNT_CENTS = 29900; // R299.00
+const AMOUNT_CENTS = 500; // R5.00
 const CURRENCY = "ZAR";
 const PRODUCT = "validating-relationships-ebook";
 

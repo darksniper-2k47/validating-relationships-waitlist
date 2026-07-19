@@ -248,7 +248,7 @@ export default function LevelAudit() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
-                  <BuyButton size="lg" label="Buy now — R299" className="w-full sm:w-auto justify-center" />
+                  <BuyButton size="lg" label="Buy now — R5" className="w-full sm:w-auto justify-center" />
                   <button
                     onClick={reset}
                     className="text-covenant-gold hover:text-covenant-bright text-sm underline-offset-4 hover:underline transition-colors py-2"

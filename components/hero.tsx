@@ -99,7 +99,7 @@ export default function Hero() {
             <motion.div variants={fadeUp} className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
               <BuyButton
                 magnetic={!isTouch}
-                label="Buy now — R299"
+                label="Buy now — R5"
                 className="w-full sm:w-auto"
               />
 
@@ -162,7 +162,7 @@ export default function Hero() {
                 {[
                   { n: "12", l: "Chapters" },
                   { n: "3", l: "Apps" },
-                  { n: "R299", l: "Price" },
+                  { n: "R5", l: "Price" },
                 ].map((s) => (
                   <div key={s.l} className="flex flex-col gap-0.5">
                     <span className="font-heading font-bold text-[18px] sm:text-[22px] text-covenant-bright leading-none">{s.n}</span>

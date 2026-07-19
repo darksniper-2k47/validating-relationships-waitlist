@@ -29,7 +29,7 @@ export default function Nav() {
         <div className="mx-auto max-w-7xl px-4 sm:px-8 py-1.5 sm:py-2 flex items-center justify-center gap-3">
           <p className="text-[10px] sm:text-[12px] font-medium tracking-wide text-parchment-mute truncate text-center">
             <span className="text-covenant-bright font-semibold">Out now</span>
-            <span className="hidden xs:inline"> · Instant PDF download · R299</span>
+            <span className="hidden xs:inline"> · Instant PDF download · R5</span>
           </p>
         </div>
       </div>
@@ -138,7 +138,7 @@ export default function Nav() {
               <div className="mt-4">
                 <BuyButton
                   magnetic={false}
-                  label="Buy now — R299"
+                  label="Buy now — R5"
                   className="w-full justify-center px-6 py-3.5 text-[16px]"
                 />
               </div>

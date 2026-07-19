@@ -53,11 +53,11 @@ export default function MobileCTA() {
                 <p className="text-[11px] font-medium text-parchment-mute">
                   <span className="text-covenant-bright font-semibold">Instant PDF download</span>
                 </p>
-                <span className="text-[12px] font-heading font-bold text-covenant-bright">R299</span>
+                <span className="text-[12px] font-heading font-bold text-covenant-bright">R5</span>
               </div>
               <BuyButton
                 magnetic={false}
-                label="Buy now — R299"
+                label="Buy now — R5"
                 className="w-full justify-center py-3.5 text-[15px]"
               />
             </div>

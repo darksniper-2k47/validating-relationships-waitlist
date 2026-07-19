@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function BuyButton({
-  label = "Buy now — R299",
+  label = "Buy now — R5",
   size = "md",
   variant = "molten",
   className = "",

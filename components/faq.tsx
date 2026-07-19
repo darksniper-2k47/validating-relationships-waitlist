@@ -11,7 +11,7 @@ const ITEMS = [
   },
   {
     q: "How much is it, and how do I pay?",
-    a: "R299 for the complete digital edition. You pay securely through Yoco — card or instant EFT, in South African Rand — and the book downloads straight after.",
+    a: "R5 for the complete digital edition. You pay securely through Yoco — card or instant EFT, in South African Rand — and the book downloads straight after.",
   },
   {
     q: "What format is it? Will it work on my phone?",
@@ -31,7 +31,7 @@ const ITEMS = [
   },
   {
     q: "Is there a printed paperback?",
-    a: "A printed edition is in the works. For now, the digital PDF gives you the full book today, at R299.",
+    a: "A printed edition is in the works. For now, the digital PDF gives you the full book today, at R5.",
   },
 ];
 

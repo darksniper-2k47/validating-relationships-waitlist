@@ -32,11 +32,11 @@ export const metadata: Metadata = {
   ),
   title: "Validating Relationships — by Dr. Joshua N. Simeon",
   description:
-    "Buy Validating Relationships — Bishop Dr. Joshua N. Simeon's blueprint for the wounded, the betrayed, and the believer who is confused by the word friend. Instant digital download, R299.",
+    "Buy Validating Relationships — Bishop Dr. Joshua N. Simeon's blueprint for the wounded, the betrayed, and the believer who is confused by the word friend. Instant digital download, R5.",
   openGraph: {
     title: "Validating Relationships — by Dr. Joshua N. Simeon",
     description:
-      "The extent to which you make it in life is dependent on the kind of relationships you allow into your life. Get the book — instant download, R299.",
+      "The extent to which you make it in life is dependent on the kind of relationships you allow into your life. Get the book — instant download, R5.",
     images: ["/images/cover-front.jpg"],
     type: "website",
   },

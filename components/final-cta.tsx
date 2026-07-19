@@ -24,10 +24,10 @@ export default function FinalCTA() {
             Get the blueprint instead.
           </motion.h2>
           <motion.p variants={fadeUp} className="mt-8 text-parchment-mute max-w-xl mx-auto">
-            The full book, all 188 pages, downloads the moment you buy. R299, once.
+            The full book, all 188 pages, downloads the moment you buy. R5, once.
           </motion.p>
           <motion.div variants={fadeUp} className="mt-8 flex justify-center">
-            <BuyButton size="lg" label="Buy now — R299" />
+            <BuyButton size="lg" label="Buy now — R5" />
           </motion.div>
         </motion.div>
       </div>
